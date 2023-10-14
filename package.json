@@ -1,0 +1,15 @@
+{
+  "name": "csce310_project",
+  "version": "1.0.0",
+  "description": "download docker desktop",
+  "main": "index.js",
+  "scripts": {
+    "dev": "docker compose build && docker compose up -d && nodemon --config nodemon.json --exec docker compose up -d web --build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

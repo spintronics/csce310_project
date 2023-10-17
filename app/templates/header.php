@@ -1,10 +1,9 @@
 <header>
-  <h1>My first PHP website</h1>
+  <h1>CSCE310 project</h1>
   <nav>
     <ul>
-      <li><a href="index.php">Home</a></li>
-      <li><a href="index.php?page=about">About</a></li>
-      <li><a href="index.php?page=contact">Contact</a></li>
+      <li><a href="/pages/home.php">Home</a></li>
+      <li><a href="/pages/register.php">Register</a></li>
     </ul>
   </nav>
 </header>

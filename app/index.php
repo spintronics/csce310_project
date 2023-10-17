@@ -3,4 +3,4 @@
 
 $page = "home";
 
-include 'templates/layout.php';
+include 'templates/header.php';

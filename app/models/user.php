@@ -2,22 +2,28 @@
 
 namespace App;
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
+use DateTime;
 
+require_once __DIR__ . '/../util.php';
+require_once __DIR__ . '/role.php';
+require_once __DIR__ . '/race.php';
 
 
 class User
 {
-  public $password;
-  public $email;
-  public $id;
+  public string $password;
+  public string $email;
+  public int $id;
+  public string $first_name;
+  public string $last_name;
+  public bool $gender;
+  public bool $hispanc_or_latino;
+  public bool $us_citizen;
+  public DateTime $date_of_birth;
+  public string $phone;
+  public Role $role;
+  public Race $race;
 
-  public function __construct($email, $password, $id = null)
-  {
-    $this->password = $password;
-    $this->email = $email;
-    $this->id = $id;
-  }
 
   public function save()
   {
@@ -31,7 +37,7 @@ class User
 
 
 
-  public static function findById($id)
+  public static function find($id)
   {
     $db = openConnection();
     $stmt = $db->prepare("SELECT * FROM user WHERE id = ?");
@@ -41,10 +47,10 @@ class User
     $user = $result->fetch_assoc();
     $stmt->close();
     $db->close();
-    return $user;
+    return User::fromResult($user);
   }
 
-  public static function findAll()
+  public static function all()
   {
     $db = openConnection();
     $stmt = $db->prepare("SELECT * FROM user");
@@ -52,10 +58,30 @@ class User
     $result = $stmt->get_result();
     $users = [];
     while ($user = $result->fetch_assoc()) {
-      $users[] = $user;
+      $users[] = User::fromResult($user);
     }
     $stmt->close();
     $db->close();
     return $users;
+  }
+
+  public static function fromResult($result)
+  {
+    $user = new User();
+    $user->id = $result['id'];
+    $user->email = $result['email'];
+    $user->password = $result['password'];
+    $user->first_name = $result['first_name'];
+    $user->last_name = $result['last_name'];
+    $user->gender = $result['gender'];
+    $user->hispanc_or_latino = $result['hispanc_or_latino'];
+    $user->us_citizen = $result['us_citizen'];
+    $user->date_of_birth = $result['date_of_birth'];
+    $user->phone = $result['phone'];
+
+    $user->role = Role::find($result['role_id']);
+    $user->race = Race::find($result['race_id']);
+
+    return $user;
   }
 }

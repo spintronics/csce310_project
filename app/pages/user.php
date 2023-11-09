@@ -68,14 +68,16 @@ try {
     <label for="phone">Phone</label>
     <input type="tel" name="phone" value="<?= $user->phone ?>" required pattern="[0-9]{10}" />
   </div>
-  <div>
-    <label for="role_id">Role</label>
-    <select name="role_id" required>
-      <? foreach (Role::all() as $role) { ?>
-        <option value="<?= $role->id ?>" <? if ($user->role->id == $role->id) echo "selected"; ?>><?= $role->name ?></option>
-      <? } ?>
-    </select>
-  </div>
+  <? if ($user->role->name == 'admin') { ?>
+    <div>
+      <label for="role_id">Role</label>
+      <select name="role_id" required>
+        <? foreach (Role::all() as $role) { ?>
+          <option value="<?= $role->id ?>" <? if ($user->role->id == $role->id) echo "selected"; ?>><?= $role->name ?></option>
+        <? } ?>
+      </select>
+    </div>
+  <? } ?>
   <div>
     <label for="race_id" required>Race</label>
     <select name="race_id" required>

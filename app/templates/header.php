@@ -23,7 +23,7 @@ session_start();
       if (App\User::loggedIn()) {
         echo "<li><a href='/forms/logout_user.php'>Logout</a></li>";
       } else {
-        echo "<li><a href='/pages/register.php'>Register</a</li>>";
+        echo "<li><a href='/pages/register.php'>Register</a</li>";
         echo "<li><a href='/pages/login.php'>Login</a></li>";
       }
       ?>

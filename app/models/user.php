@@ -29,6 +29,11 @@ class User
   public Race $race;
   public Gender $gender;
 
+  public function verifyPassword($password)
+  {
+    return $password == $this->password;
+  }
+
   public function save()
   {
     $db = openConnection();

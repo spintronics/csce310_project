@@ -1,0 +1,7 @@
+form > div {
+  margin-bottom: 10px;
+}
+.error {
+  color: red;
+  font-size: 18px;
+}

@@ -1,5 +1,5 @@
 <?php
-
+// Kevin Brown
 namespace App;
 
 require_once __DIR__ . '/../util.php';
@@ -19,7 +19,7 @@ class Role
     $db->close();
   }
 
-  public function find(int $id)
+  public static function find(int $id)
   {
     $db = openConnection();
     $stmt = $db->prepare("SELECT * FROM `role` WHERE id = ?");
@@ -32,7 +32,7 @@ class Role
     return Role::fromResult($role);
   }
 
-  public function all()
+  public static function all()
   {
     $db = openConnection();
     $stmt = $db->prepare("SELECT * FROM `role`");

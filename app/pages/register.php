@@ -1,8 +1,5 @@
 <?php
-require_once __DIR__ . '/../models/user.php';
-
-use App\User;
-
+// Kevin Brown
 include __DIR__ . '/../templates/header.php';
 ?>
 

@@ -1,6 +1,4 @@
 <?php
-
-
-$page = "home";
+// Kevin Brown
 
 include 'templates/header.php';

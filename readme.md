@@ -4,6 +4,14 @@ download mysql workbench
 
 download node
 
+install packages
+
+> npm install
+
+run the project
+
+> npm run dev
+
 open the model.mwb file in mysql workbench
 
 from the menu bar select Database > Forward Engineer
@@ -24,9 +32,3 @@ execute this stored procedure:
 ```sql
 call `setup`;
 ```
-
-you can use the following for development (auto update)
-
-> npm install
-
-> npm run dev

@@ -17,7 +17,7 @@ function redirect($page)
 
 function redirectIfNotAuthenticated()
 {
-  if (!isset($_COOKIE['user_id'])) {
+  if (!isset($_COOKIE['user_uin'])) {
     redirect("/pages/login.php");
   }
 }

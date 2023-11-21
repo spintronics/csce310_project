@@ -1,10 +1,10 @@
-<?php
+<?
 // Kevin Brown
 namespace App;
 
 require_once __DIR__ . '/../util.php';
 
-class Role
+class DegreeProgram
 {
   public int $id;
   public string $name;
@@ -12,7 +12,7 @@ class Role
   public function save()
   {
     $db = openConnection();
-    $stmt = $db->prepare("INSERT INTO role (name) VALUES (?)");
+    $stmt = $db->prepare("INSERT INTO degree_program (name) VALUES (?)");
     $stmt->bind_param("s", $this->name);
     $stmt->execute();
     $stmt->close();
@@ -22,36 +22,36 @@ class Role
   public static function find(int $id)
   {
     $db = openConnection();
-    $stmt = $db->prepare("SELECT * FROM `role` WHERE id = ?");
+    $stmt = $db->prepare("SELECT * FROM `degree_program` WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $role = $result->fetch_assoc();
+    $degree_program = $result->fetch_assoc();
     $stmt->close();
     $db->close();
-    return Role::fromResult($role);
+    return DegreeProgram::fromResult($degree_program);
   }
 
   public static function all()
   {
     $db = openConnection();
-    $stmt = $db->prepare("SELECT * FROM `role`");
+    $stmt = $db->prepare("SELECT * FROM `degree_program`");
     $stmt->execute();
     $result = $stmt->get_result();
-    $roles = [];
-    while ($role = $result->fetch_assoc()) {
-      $roles[] = Role::fromResult($role);
+    $degree_programs = [];
+    while ($degree_program = $result->fetch_assoc()) {
+      $degree_programs[] = DegreeProgram::fromResult($degree_program);
     }
     $stmt->close();
     $db->close();
-    return $roles;
+    return $degree_programs;
   }
 
   public static function fromResult($result)
   {
-    $role = new Role();
-    $role->id = $result['id'];
-    $role->name = $result['name'];
-    return $role;
+    $degree_program = new DegreeProgram();
+    $degree_program->id = $result['id'];
+    $degree_program->name = $result['name'];
+    return $degree_program;
   }
 }

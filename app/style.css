@@ -5,3 +5,17 @@ form > div {
   color: red;
   font-size: 18px;
 }
+html {
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+.user-table input {
+  width: 100%;
+}

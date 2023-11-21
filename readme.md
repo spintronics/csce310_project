@@ -12,7 +12,7 @@ run the project
 
 > npm run dev
 
-open the model.mwb file in mysql workbench
+open the model_professor.mwb file in mysql workbench
 
 from the menu bar select Database > Forward Engineer
 
@@ -26,9 +26,3 @@ connection details:
 - port: 3306
 - username: root
 - password: admin
-
-execute this stored procedure:
-
-```sql
-call `setup`;
-```

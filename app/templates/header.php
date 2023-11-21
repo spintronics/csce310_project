@@ -1,8 +1,17 @@
 <?
-
+// Kevin Brown
 require_once __DIR__ . '/../models/user.php';
 
+
 session_start();
+
+$user = App\User::fromSession();
+
+if ($user && !$user->active_account) {
+  App\User::clearSession();
+  $user = null;
+  App\redirect("/pages/login.php?error=Account is inactive");
+}
 
 ?>
 
@@ -21,12 +30,15 @@ session_start();
       <li><a href="/pages/home.php">Home</a></li>
       <?
       if (App\User::loggedIn()) {
-        echo "<li><a href='/forms/logout_user.php'>Logout</a></li>";
-      } else {
-        echo "<li><a href='/pages/register.php'>Register</a</li>";
-        echo "<li><a href='/pages/login.php'>Login</a></li>";
-      }
       ?>
+        <li><a href='/forms/logout_user.php'>Logout</a></li>
+        <? if ($user->isAdmin()) { ?>
+          <li><a href='/pages/admin_users.php'>Admin Users</a></li>
+        <? } ?>
+      <? } else { ?>
+        <li><a href='/pages/register.php'>Register</a></li>
+        <li><a href='/pages/login.php'>Login</a></li>
+      <? } ?>
       <li><a href="/pages/user.php">User</a></li>
     </ul>
   </nav>

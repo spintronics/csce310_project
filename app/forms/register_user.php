@@ -8,28 +8,34 @@ use App\User;
 
 use function App\redirect;
 
-try {
-  $existingUser = User::findByEmail($_POST['email']);
-  if ($existingUser) {
-    redirect("/pages/login.php?error=Email already exists");
-    exit;
-  } else {
-    throw new Exception("User not found");
-  }
-} catch (\Throwable $e) {
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-  $user = new App\User();
-  $user->email = $email;
-  $user->password = $password;
-  $user->create();
-
-  $user = User::findByEmail($email);
-  $user->saveSession();
-
-  redirect("/pages/user.php");
+// try {
+$existingUser = User::find($_POST['UIN']);
+if ($existingUser) {
+  redirect("/pages/register.php?error=UIN already exists");
+  exit;
 }
+$user_count = User::count();
+$user = new App\User();
+if ($user_count == 0) {
+  // First user is an admin
+  $user->user_type = App\UserType::Admin;
+} else {
+  $user->user_type = App\UserType::Student;
+}
+$user->username = $_POST['username'];
+$user->password = $_POST['password'];
+$user->UIN = $_POST['UIN'];
+$user->create();
 
+$user = User::find($_POST['UIN']);
+$user->saveSession();
+
+redirect("/pages/user.php");
+exit;
+// } catch (\Throwable $e) {
+//   redirect("/pages/register.php?error=" . $e->getMessage());
+//   exit;
+// }
 
 
 exit;

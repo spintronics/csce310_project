@@ -9,7 +9,6 @@ use function App\redirectIfNotAuthenticated;
 
 require_once __DIR__ . '/../models/user.php';
 require_once __DIR__ . '/../models/student.php';
-require_once __DIR__ . '/../models/degree_program.php';
 
 redirectIfNotAuthenticated();
 

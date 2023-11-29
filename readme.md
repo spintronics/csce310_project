@@ -26,3 +26,14 @@ connection details:
 - port: 3306
 - username: root
 - password: admin
+
+## Kevin Brown
+
+I created the following view:
+
+```sql
+CREATE VIEW `user_student` AS
+select * from `user` join `college_student` on `user`.UIN = `college_student`.UIN;
+```
+
+I also made the username on the user table an index to make it easier to search for a user by username.

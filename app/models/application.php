@@ -2,6 +2,13 @@
 // Shaz Maradya
 namespace App;
 
+enum Status: string
+{
+  case Pending = "pending";
+  case Accepted = "accepted";
+  case Rejected = "rejected";
+}
+
 class Application
 {
     public int $app_num = 0;
@@ -10,12 +17,15 @@ class Application
     public string $uncom_cert = "";
     public string $com_cert = "";
     public string $purpose_statement = "";
+    public Status $status = Status::Pending;
+
 
     public function create()
     {
       $db = openConnection();
-      $stmt = $db->prepare("INSERT INTO application (program_num,UIN,uncom_cert,com_cert,purpose_statement) VALUES (?,?,?,?,?)");
-      $stmt->bind_param("iisss", $this->program_num, $this->UIN,$this->uncom_cert,$this->com_cert,$this->purpose_statement);
+      $status_val = (string) $this->status->value;
+      $stmt = $db->prepare("INSERT INTO application (program_num,UIN,uncom_cert,com_cert,purpose_statement,status) VALUES (?,?,?,?,?,?)");
+      $stmt->bind_param("iissss", $this->program_num, $this->UIN,$this->uncom_cert,$this->com_cert,$this->purpose_statement,$status_val);
       $stmt->execute();
       $stmt->close();
       $db->close();
@@ -24,14 +34,26 @@ class Application
     public function update()
     {
       $db = openConnection();
-      $stmt = $db->prepare("UPDATE application SET uncom_cert=?,com_cert=?,purpose_statement=? WHERE app_num=?");
-      $stmt->bind_param("sssi", $this->uncom_cert,$this->com_cert,$this->purpose_statement,$this->app_num);
+      $status_val = (string) $this->status->value;
+      $stmt = $db->prepare("UPDATE application SET uncom_cert=?,com_cert=?,purpose_statement=?,status=? WHERE app_num=?");
+      $stmt->bind_param("ssssi", $this->uncom_cert,$this->com_cert,$this->purpose_statement,$status_val,$this->app_num);
       $success = $stmt->execute();
       if (!$success) {
         throw new \Exception($stmt->error);
       }
       $stmt->close();
       $db->close();
+    }
+
+
+    public function accept()
+    {
+        $db = openConnection();
+        $stmt = $db->prepare("INSERT INTO track (program_num,UIN) VALUES (?,?)");
+        $stmt->bind_param("ii", $this->program_num, $this->UIN);
+        $stmt->execute();
+        $stmt->close();
+        $db->close();
     }
 
     public function delete()
@@ -57,6 +79,7 @@ class Application
       $application->uncom_cert  = $result['uncom_cert'];
       $application->com_cert  = $result['com_cert'];
       $application->purpose_statement  = $result['purpose_statement'];
+      $application->status = Status::from($result['status']);
 
       return $application;
     }
@@ -92,6 +115,21 @@ class Application
       $stmt->close();
       $db->close();
       return $app;
+    }
+
+    public static function programApps($program_num){
+        $db = openConnection();
+        $stmt = $db->prepare("SELECT * from application WHERE program_num=?");
+        $stmt->bind_param("i", $program_num);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $apps = [];
+        while ($app = $result->fetch_assoc()) {
+          $apps[] = Application::fromResult($app);
+        }
+        $stmt->close();
+        $db->close();
+        return $apps;
     }
 
 

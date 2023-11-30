@@ -32,6 +32,11 @@ class Program
       $db->close();
     }
 
+    public function delete()
+    {
+      #todo
+    }
+
     public static function fromResult($result)
     {
       $program = new Program();

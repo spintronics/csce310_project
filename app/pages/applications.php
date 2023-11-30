@@ -77,7 +77,8 @@ $program_mapping = App\Program::nameMapping();
                 <textarea type="text" name="purpose" rows="12" cols="40"><?= $application->purpose_statement ?></textarea>
             </td>
             <td>
-                Pending
+                <?= $application->status->value ?>
+
             </td>
             <td>
               <select name="action">

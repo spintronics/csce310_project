@@ -6,12 +6,14 @@ use function App\appendQueryParams;
 require_once __DIR__ . '/../util.php';
 require_once __DIR__ . '/../models/user.php';
 
+// read query params
 $sort = App\getOr('sort', 'UIN');
 $page = App\getOr('page', 1);
 $filter = App\getOr('filter', null);
 
 $users = [];
 
+// check for deactivated filter
 if ($filter == 'deactivated') {
   $users = App\User::deactivatedUsers();
 } else {

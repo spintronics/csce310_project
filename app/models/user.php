@@ -205,11 +205,13 @@ class User
       return;
     }
     $_SESSION['user_uin'] = $this->UIN;
+    // set the cookie to expire in 30 days
     setcookie('user_uin', $this->UIN, time() + 60 * 60 * 24 * 30, "/");
   }
 
   public static function clearSession()
   {
+    // clear the session and cookie
     if (isset($_SESSION['user_uin'])) {
       unset($_SESSION['user_uin']);
     }
@@ -232,6 +234,7 @@ class User
 
   public static function createRandom()
   {
+    // create a random user using uuids
     $user = new User();
     $user->UIN = rand(1000000000, 9999999999);
     $user->first_name = uniqid();
@@ -255,6 +258,7 @@ class User
 
   public static function deactivatedUsers()
   {
+    // use the inactive_accounts view to get all users with inactive accounts
     $db = openConnection();
     $stmt = $db->prepare("SELECT * FROM `inactive_accounts`");
     $stmt->execute();

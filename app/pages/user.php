@@ -123,7 +123,7 @@ User Status: <?= $user->active_account ? "Active" : "Inactive" ?>
     </div>
     <div>
       <label for="gpa">GPA</label>
-      <input type="number" min="0" max="4" name="gpa" required value="<?= $student->gpa ?>" />
+      <input type="number" step="0.1" min="0" max="4" name="gpa" required value="<?= $student->gpa ?>" />
     </div>
     <div>
       <label for="major">Major</label>

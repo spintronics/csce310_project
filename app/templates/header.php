@@ -32,17 +32,17 @@ if ($user && !$user->active_account) {
       if (App\User::loggedIn()) {
       ?>
         <li><a href='/forms/logout_user.php'>Logout</a></li>
+        <li><a href="/pages/user.php">User</a></li>
         <? if ($user->isAdmin()) { ?>
           <li><a href='/pages/admin_users.php'>Admin Users</a></li>
           <li><a href='/pages/admin_programs.php'>Programs</a></li>
         <? } else { ?>
           <li><a href='/pages/applications.php'>Applications</a></li>
-          <? } ?>
+        <? } ?>
       <? } else { ?>
         <li><a href='/pages/register.php'>Register</a></li>
         <li><a href='/pages/login.php'>Login</a></li>
       <? } ?>
-      <li><a href="/pages/user.php">User</a></li>
     </ul>
   </nav>
 </header>

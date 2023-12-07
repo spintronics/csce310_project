@@ -155,12 +155,13 @@ class User
     return User::fromResult($user);
   }
 
-  public static function all($sort = 'UIN')
+  public static function all($sort = 'UIN', $page = 1)
   {
     $db = openConnection();
     $stmt = null;
-    // sql injection vulnerability
-    $stmt = $db->prepare("SELECT * FROM user ORDER BY $sort");
+    $stmt = $db->prepare("SELECT * FROM user ORDER BY $sort LIMIT 10 OFFSET ?");
+    $offset = ($page - 1) * 10;
+    $stmt->bind_param("i", $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $users = [];
@@ -227,5 +228,43 @@ class User
   public function isAdmin()
   {
     return $this->user_type == UserType::Admin;
+  }
+
+  public static function createRandom()
+  {
+    $user = new User();
+    $user->UIN = rand(1000000000, 9999999999);
+    $user->first_name = uniqid();
+    $user->m_initial = uniqid();
+    $user->last_name = uniqid();
+    $user->username = "test";
+    $user->password = "test";
+    $user->email = uniqid() . "@test.com";
+    $user->user_type = UserType::Student;
+    $user->discord_name = uniqid();
+    $user->active_account = true;
+    $user->create();
+    return $user;
+  }
+
+  public static function pageCount()
+  {
+    $count = User::count();
+    return ceil($count / 10);
+  }
+
+  public static function deactivatedUsers()
+  {
+    $db = openConnection();
+    $stmt = $db->prepare("SELECT * FROM `inactive_accounts`");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $users = [];
+    while ($user = $result->fetch_assoc()) {
+      $users[] = User::fromResult($user);
+    }
+    $stmt->close();
+    $db->close();
+    return $users;
   }
 }

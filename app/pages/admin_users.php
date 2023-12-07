@@ -1,17 +1,39 @@
 <?
 // Kevin Brown
+
+use function App\appendQueryParams;
+
 require_once __DIR__ . '/../util.php';
 require_once __DIR__ . '/../models/user.php';
 
 $sort = App\getOr('sort', 'UIN');
+$page = App\getOr('page', 1);
+$filter = App\getOr('filter', null);
 
-$users = App\User::all($sort);
+$users = [];
+
+if ($filter == 'deactivated') {
+  $users = App\User::deactivatedUsers();
+} else {
+  $users = App\User::all($sort, $page);
+}
+
+$pageCount = App\User::pageCount();
+$query = $_SERVER['QUERY_STRING'];
 
 include __DIR__ . '/../templates/header.php';
 
 ?>
 
+<h1>Actions</h1>
+
+<a href="/actions/create_random_users.php">Create 100 Random Users</a>
+
 <h1>Users</h1>
+<div id="filters">
+  <a href="/pages/admin_users.php?filter=deactivated">Deactivated Users</a>
+  <a href="/pages/admin_users.php">All Users</a>
+</div>
 <div class="table-responsive user-table">
   <table class="table" style="table-layout: fixed;">
     <thead>
@@ -84,4 +106,12 @@ include __DIR__ . '/../templates/header.php';
       <? endforeach ?>
     </tbody>
   </table>
+  <div id="paging" style="text-align: center;">
+    <? if ($page > 1) { ?>
+      <a href="/pages/admin_users.php?page=<?= $page - 1 ?>">Previous</a>
+    <? } ?>
+    <? if ($page < $pageCount) { ?>
+      <a href="/pages/admin_users.php?page=<?= $page + 1 ?>">Next</a>
+    <? } ?>
+  </div>
 </div>

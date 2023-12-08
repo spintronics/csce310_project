@@ -1,6 +1,8 @@
 <?
 // Shaz Maradya
 namespace App;
+require_once __DIR__ . '/../models/student.php';
+
 
 class Program
 {
@@ -121,6 +123,21 @@ class Program
       }
 
       return $mapping;
+    }
+
+    public static function members($id){
+      $db = openConnection();
+      $stmt = $db->prepare("SELECT college_student.* from track join college_student on track.UIN = college_student.UIN WHERE track.program_num = ?");
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      $members = [];
+      while ($member = $result->fetch_assoc()) {
+        $members[] = Student::fromResult($member);
+      }
+      $stmt->close();
+      $db->close();
+      return $members;
     }
 
 }

@@ -3,7 +3,11 @@
 require_once __DIR__ . '/../models/user.php';
 
 
-session_start();
+// session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 
 $user = App\User::fromSession();
 
@@ -38,6 +42,9 @@ if ($user && !$user->active_account) {
           <li><a href='/pages/admin_programs.php'>Programs</a></li>
         <? } else { ?>
           <li><a href='/pages/applications.php'>Applications</a></li>
+          <li><a href='/pages/event.php'>Events</a></li>
+          <li><a href='/pages/user_docx.php'>Documents</a></li>
+
         <? } ?>
       <? } else { ?>
         <li><a href='/pages/register.php'>Register</a></li>

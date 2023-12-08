@@ -47,6 +47,11 @@ class Program
       $stmt = $db->prepare("DELETE FROM application WHERE program_num=?");
       $stmt->bind_param("i", $this->program_num);
       $success = $stmt->execute();
+      
+      # delete track
+      $stmt = $db->prepare("DELETE FROM track WHERE program_num=?");
+      $stmt->bind_param("i", $this->program_num);
+      $success = $stmt->execute();
 
       # delete event tracking
       $stmt = $db->prepare("DELETE FROM event_tracking WHERE event_event_id in (Select event_id from event where program_num=?)");

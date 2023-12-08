@@ -34,7 +34,39 @@ class Program
 
     public function delete()
     {
-      #todo
+      $db = openConnection();
+
+      # delete documentation
+      $stmt = $db->prepare("DELETE FROM documentation WHERE app_num in (Select app_num from application where program_num=?)");
+      $stmt->bind_param("i", $this->program_num);
+      $success = $stmt->execute();
+
+      # delete application
+      $stmt = $db->prepare("DELETE FROM application WHERE program_num=?");
+      $stmt->bind_param("i", $this->program_num);
+      $success = $stmt->execute();
+
+      # delete event tracking
+      $stmt = $db->prepare("DELETE FROM event_tracking WHERE event_event_id in (Select event_id from event where program_num=?)");
+      $stmt->bind_param("i", $this->program_num);
+      $success = $stmt->execute();
+      
+      # delete event
+      $stmt = $db->prepare("DELETE FROM event WHERE program_num=?");
+      $stmt->bind_param("i", $this->program_num);
+      $success = $stmt->execute();
+
+      # delete program
+  
+      $stmt = $db->prepare("DELETE FROM programs WHERE program_num=?");
+      $stmt->bind_param("i", $this->program_num);
+      $success = $stmt->execute();
+  
+      if (!$success) {
+        throw new \Exception($stmt->error);
+      }
+      $stmt->close();
+      $db->close();
     }
 
     public static function fromResult($result)

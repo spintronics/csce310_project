@@ -1,6 +1,8 @@
 <?
 // Shaz Maradya
 namespace App;
+require_once __DIR__ . '/../models/student.php';
+
 
 enum Status: string
 {
@@ -18,6 +20,13 @@ class Application
     public string $com_cert = "";
     public string $purpose_statement = "";
     public Status $status = Status::Pending;
+    public string $program_name = "";
+    public float $gpa = 0.0;
+    public StudentClassification $current_classification = StudentClassification::Freshman;
+    public string $first_name = "";
+    public string $last_name = "";
+
+
 
 
     public function create()
@@ -80,6 +89,12 @@ class Application
       $application->com_cert  = $result['com_cert'];
       $application->purpose_statement  = $result['purpose_statement'];
       $application->status = Status::from($result['status']);
+      $application->program_name  = $result['name'];
+      $application->gpa  = $result['gpa'];
+      $application->current_classification  = StudentClassification::from($result['current_classification']);
+      $application->first_name = $result['first_name'];
+      $application->last_name = $result['last_name'];
+
 
       return $application;
     }
@@ -87,7 +102,7 @@ class Application
     public static function all($id)
     {
       $db = openConnection();
-      $stmt = $db->prepare("SELECT * FROM application WHERE UIN=?");
+      $stmt = $db->prepare("SELECT * FROM application_student WHERE UIN=?");
       $stmt->bind_param("i", $id);
       $stmt->execute();
       $result = $stmt->get_result();
@@ -103,7 +118,7 @@ class Application
     public static function get($id)
     {
       $db = openConnection();
-      $stmt = $db->prepare("SELECT * from application WHERE app_num=?");
+      $stmt = $db->prepare("SELECT * from application_student WHERE app_num=?");
       $stmt->bind_param("i", $id);
       $stmt->execute();
       $result = $stmt->get_result();
@@ -119,7 +134,7 @@ class Application
 
     public static function programApps($program_num){
         $db = openConnection();
-        $stmt = $db->prepare("SELECT * from application WHERE program_num=?");
+        $stmt = $db->prepare("SELECT * from application_student WHERE program_num=?");
         $stmt->bind_param("i", $program_num);
         $stmt->execute();
         $result = $stmt->get_result();

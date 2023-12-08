@@ -65,7 +65,7 @@ $program_mapping = App\Program::nameMapping();
                 <?= $application->app_num ?>
             </td>
             <td>
-                <?= $program_mapping[$application->program_num] ?>
+                <?= $application->program_name ?>
             </td>
             <td>
               <textarea type="text" name="uncom_cert" rows="10" cols="20" ><?= $application->uncom_cert ?></textarea>

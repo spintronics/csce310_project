@@ -42,6 +42,9 @@ $apps = App\Application::programApps($id)
     <thead>
       <tr>
         <th style="width: 25%;">Student UIN</th>
+        <th style="width: 25%;">First Name</th>
+        <th style="width: 25%;">Last Name</th>
+
         <th></th>
       </tr>
     </thead>
@@ -53,6 +56,12 @@ $apps = App\Application::programApps($id)
           <tr>
             <td>
                 <?= $app->UIN ?>
+            </td>
+            <td>
+                <?= $app->first_name ?>
+            </td>
+            <td>
+                <?= $app->last_name ?>
             </td>
             <td>
                 <a href='/pages/view_application.php?id=<?= $app->app_num ?>'>See Application</a>

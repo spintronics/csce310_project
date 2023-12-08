@@ -63,8 +63,13 @@ class Program
       $stmt->bind_param("i", $this->program_num);
       $success = $stmt->execute();
 
+      # delete cert_enrollment
+      $stmt = $db->prepare("DELETE FROM cert_enrollment WHERE program_num=?");
+      $stmt->bind_param("i", $this->program_num);
+      $success = $stmt->execute();
+
+
       # delete program
-  
       $stmt = $db->prepare("DELETE FROM programs WHERE program_num=?");
       $stmt->bind_param("i", $this->program_num);
       $success = $stmt->execute();

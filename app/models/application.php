@@ -148,4 +148,24 @@ class Application
     }
 
 
+
+    //what is added for application_documentation
+    public static function getApplication($id) 
+    {
+      $db = openConnection();
+      $stmt = $db->prepare("SELECT * from `application` WHERE UIN=?");
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      $app = $result->fetch_assoc();
+      if(!$app){
+        return null;
+      }
+
+      $stmt->close();
+      $db->close();
+      return $app;
+    }
+
+
 }

@@ -40,11 +40,11 @@ if ($user && !$user->active_account) {
         <? if ($user->isAdmin()) { ?>
           <li><a href='/pages/admin_users.php'>Admin Users</a></li>
           <li><a href='/pages/admin_programs.php'>Programs</a></li>
-        <? } else { ?>
-          <li><a href='/pages/applications.php'>Applications</a></li>
           <li><a href='/pages/event.php'>Events</a></li>
-          <li><a href='/pages/user_docx.php'>Documents</a></li>
-
+          <? } else { ?>
+            <li><a href='/pages/applications.php'>Applications</a></li>
+            <li><a href='/pages/event.php'>Events</a></li>
+            <li><a href='/pages/user_docx.php'>Documents</a></li>
         <? } ?>
       <? } else { ?>
         <li><a href='/pages/register.php'>Register</a></li>

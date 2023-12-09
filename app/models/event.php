@@ -8,10 +8,12 @@ class Event
     public int $UIN;
     public int $program_num;
     public string $start_date;
-    public string $time; // Time field added
+    public string $time; 
     public string $location;
     public string $end_date;
     public string $event_type;
+    public int $event_event_id;
+    public int $user_UIN;
 
     public function create()
     {
@@ -37,6 +39,14 @@ class Event
     public function delete()
     {
         $db = openConnection();
+
+        // delete from tracking record first
+        $stmt = $db->prepare("DELETE FROM event_tracking WHERE event_event_id=?");
+        $stmt->bind_param("i", $this->event_id);
+        $stmt->execute();
+        $stmt->close();
+
+
         $stmt = $db->prepare("DELETE FROM event WHERE event_id=?");
         $stmt->bind_param("i", $this->event_id);
         $stmt->execute();
@@ -44,7 +54,7 @@ class Event
         $db->close();
     }
 
-    public static function get($id)
+    public function get($id)
     {
         $db = openConnection();
         $stmt = $db->prepare("SELECT * FROM event WHERE event_id=?");
@@ -90,6 +100,35 @@ class Event
         }
         $db->close();
         return $events;
+    }
+
+    // add entry to event tracking for user
+    public function eventTracking() {
+        $db = openConnection();
+        $stmt = $db->prepare("INSERT INTO event_tracking (event_event_id, user_UIN) VALUES (?, ?)");
+        $stmt->bind_param("ii", $this->event_event_id, $this->user_UIN);
+        $stmt->execute();
+        $this->event_id = $db->insert_id;
+        $stmt->close();
+        $db->close();
+    }
+
+    public function checkEventTracking($user_UIN, $event_event_id) {
+  
+        $db = openConnection();
+        $stmt = $db->prepare("SELECT * FROM event_tracking WHERE event_event_id=? AND user_UIN=?");
+        $stmt->bind_param("ii", $event_event_id, $user_UIN);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $eventData = $result->fetch_assoc();
+        $stmt->close();
+        $db->close();
+
+        if ($eventData) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

@@ -20,6 +20,10 @@ $app = App\Application::get($id);
 <div style="margin-left: 10px;">
     <div >
         <span>Student UIN: <?= $app->UIN ?></span><br/>
+        <span>Student Name: <?= $app->first_name." ".$app->last_name ?></span><br/>
+
+        <span>GPA: <?= $app->gpa ?></span><br/>
+        <span>Classification: <?= $app->current_classification->value ?></span><br/>
         <span>Program Name: <?= $app->UIN ?></span>
     </div><br/>
 

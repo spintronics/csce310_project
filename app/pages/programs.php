@@ -15,7 +15,8 @@ if (!$id) {
     exit;
 }
 
-$apps = App\Application::programApps($id)
+$apps = App\Application::programApps($id);
+$members = App\Program::members($id);
 
 ?>
 <h1>Program Information and Applications</h1>
@@ -42,6 +43,9 @@ $apps = App\Application::programApps($id)
     <thead>
       <tr>
         <th style="width: 25%;">Student UIN</th>
+        <th style="width: 25%;">First Name</th>
+        <th style="width: 25%;">Last Name</th>
+
         <th></th>
       </tr>
     </thead>
@@ -55,10 +59,52 @@ $apps = App\Application::programApps($id)
                 <?= $app->UIN ?>
             </td>
             <td>
+                <?= $app->first_name ?>
+            </td>
+            <td>
+                <?= $app->last_name ?>
+            </td>
+            <td>
                 <a href='/pages/view_application.php?id=<?= $app->app_num ?>'>See Application</a>
             </td>
           </tr>
           <? }?>
+      <? endforeach ?>
+    </tbody>
+  </table>
+</div>
+
+<h2>Current Members</h2>
+<div class="table-responsive user-table">
+  <table class="table" style="table-layout: fixed;">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Student UIN</th>
+        <th style="width: 25%;">Major</th>
+        <th style="width: 25%;">GPA</th>
+        <th style="width: 25%;">School</th>
+        <th style="width: 25%;">Classification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <? foreach ($members as $member) : ?>
+          <tr>
+            <td>
+                <?= $member->UIN ?>
+            </td>
+            <td>
+                <?= $member->major ?>
+            </td>
+            <td>
+              <?= $member->gpa ?>
+            </td>
+            <td>
+              <?= $member->school ?>
+            </td>
+            <td>
+              <?= $member->current_classification->value ?>
+            </td>
+          </tr>
       <? endforeach ?>
     </tbody>
   </table>

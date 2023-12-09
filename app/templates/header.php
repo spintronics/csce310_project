@@ -35,8 +35,10 @@ if ($user && !$user->active_account) {
         <? if ($user->isAdmin()) { ?>
           <li><a href='/pages/admin_users.php'>Admin Users</a></li>
           <li><a href='/pages/admin_programs.php'>Programs</a></li>
+          <li><a href='/pages/get_student_uin.php'>Student Progress Tracking</a></li>
         <? } else { ?>
           <li><a href='/pages/applications.php'>Applications</a></li>
+          <li><a href='/pages/student_program_tracking.php'>Program Progress Tracking</a></li>
           <? } ?>
       <? } else { ?>
         <li><a href='/pages/register.php'>Register</a></li>
